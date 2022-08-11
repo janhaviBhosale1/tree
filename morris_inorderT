@@ -1,0 +1,66 @@
+//inorder traversal by morris method
+//in this method we r traversing tree without using stack and recursion
+//it does not consume extra space & it takes o(n) S.C.
+//here we use thread in binary tree
+ #include<bits/stdc++.h>
+ using namespace std;
+ 
+ struct tNode{
+     int data;
+     struct tNode* left;
+     struct tNode* right;
+ };
+void MorrisTraversal(struct tNode* root){
+    struct tNode *current, *pre;
+    if(root== NULL)
+    return;
+    
+    current = root;
+    while(current != NULL){
+        //check 1st base case
+        if(current->left == NULL){
+            cout<<current->data<<" ";
+            //now shift to right part
+            current = current->right;
+        }
+        //now handle 2nd case
+        else{
+            //find out rightmost node of left tree
+            pre = current->left;
+            while(pre->right != NULL && pre->right != current)
+            pre= pre->right;
+            
+            //now mark the thread
+            if(pre->right == NULL){
+                pre->right = current;
+                current= current->left; //here we finish left side
+            }
+            else{
+                pre->right = NULL;
+                cout<<current->data<<" ";
+                current=current->right;
+            }
+        }
+    }
+}
+struct tNode* newtNode(int data){
+    struct tNode* node = new tNode;
+    node->data= data;
+    node->left = NULL;
+    node->right = NULL;
+    
+    return(node);
+}
+
+//driver code
+int main(){
+    struct tNode* root = newtNode(1);
+    root->left = newtNode(2);
+    root->right = newtNode(3);
+    root->left->left = newtNode(4);
+    root->left->right = newtNode(5);
+ 
+    MorrisTraversal(root);
+ 
+    return 0;
+}
